@@ -1,17 +1,20 @@
 import pygame
 
+class Player:
 
-sprite = pygame.image.load('E:/github_projects/mazeGame/assest/player.png')
-rotation = 0
-scale = (1,1)
+    def __init__(self,x,y) -> None:
+        self.x = x
+        self.y =y
+        self.scale = (50,50)
+        self.rotation = 0
+        self.sprite = pygame.image.load('E:/github_projects/mazeGame/assest/player.png')
+        self.sprite = pygame.transform.scale(self.sprite,self.scale)
 
-def create(window,position):
-    pygame.transform.scale(sprite,scale)
-    window.blit(sprite,position)
+    def create(self,window):
+        window.blit(self.sprite,(self.x,self.y))
 
-def start():
-    pass
-
-def process():
-    pass
+    def move(self,step,window):
+        self.x += step[0]
+        self.y += step[1]
+        self.create(window)
 

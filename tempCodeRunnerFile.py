@@ -32,13 +32,9 @@ def start(window):
 def process(window):
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        player.move((-5,0),window)
+        player.move((-10,0),window)
     if keys[pygame.K_RIGHT]:
-        player.move((5,0),window)
-    if keys[pygame.K_UP]:
-        player.move((0,-5),window)
-    if keys[pygame.K_DOWN]:
-        player.move((0,5),window)
+        player.move((10,0),window)
     window.fill((44, 92, 221))
     player.create(window)
     pygame.display.update()
