@@ -19,29 +19,40 @@ def main(window):
     run = True
     start(window)
     while run:
-        clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
         process(window)
+        clock.tick(FPS)
+        pygame.display.update()
+
 
 def start(window):
     window.fill((44, 92, 221))
 
 def process(window):
     keys = pygame.key.get_pressed()
+
     if keys[pygame.K_LEFT]:
+        player.direction = "left"
         player.move((-5,0),window)
-    if keys[pygame.K_RIGHT]:
+    elif keys[pygame.K_RIGHT]:
+        player.direction = "right"
         player.move((5,0),window)
     if keys[pygame.K_UP]:
+        player.direction = "up"
         player.move((0,-5),window)
-    if keys[pygame.K_DOWN]:
+    elif keys[pygame.K_DOWN]:
+        player.direction = "down"
         player.move((0,5),window)
+    if player.direction == "right":
+        player.image = player.sprite
+    elif player.direction == "left":
+        player.image = player.flip_sprite
     window.fill((44, 92, 221))
     player.create(window)
-    pygame.display.update()
+
 
 if __name__ == "__main__":
     main(window)
