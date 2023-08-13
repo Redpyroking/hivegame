@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 from player import Player
+from arrow import Arrow
 
 pygame.init()
 
@@ -13,6 +14,7 @@ FPS = 60
 
 window = pygame.display.set_mode((WIDTH,HEIGHT))
 player = Player(320,160)
+arrow = Arrow(320,160)
 
 def main(window):
     clock = pygame.time.Clock()
@@ -29,30 +31,32 @@ def main(window):
 
 
 def start(window):
-    window.fill((44, 92, 221))
+    pass
 
 def process(window):
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_LEFT]:
         player.direction = "left"
-        player.move((-5,0),window)
+        player.rotate(90)
+        player.move((-1,0))
     elif keys[pygame.K_RIGHT]:
         player.direction = "right"
-        player.move((5,0),window)
+        player.rotate(-90)
+        player.move((1,0))
     if keys[pygame.K_UP]:
         player.direction = "up"
-        player.move((0,-5),window)
+        player.flip("ver",False)
+        player.move((0,-1))
     elif keys[pygame.K_DOWN]:
         player.direction = "down"
-        player.move((0,5),window)
-    if player.direction == "right":
-        player.image = player.sprite
-    elif player.direction == "left":
-        player.image = player.flip_sprite
-    window.fill((44, 92, 221))
-    player.create(window)
-
+        player.flip("ver",True)
+        player.move((0,1))
+    arrow.follow(player)
+    arrow.rotate_around(player)
+    window.fill((135, 206, 235))
+    player.draw(window)
+    arrow.draw(window)
 
 if __name__ == "__main__":
     main(window)
