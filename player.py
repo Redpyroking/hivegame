@@ -7,6 +7,7 @@ class Player:
         self.y =y
         self.scale = (30,30)
         self.rotation = 0
+        self.position = (x,y)
         self.image = pygame.image.load('E:/github_projects/mazeGame/assest/player.png')
         self.image = pygame.transform.scale(self.image,self.scale)
         self.sprite = self.image
@@ -30,6 +31,8 @@ class Player:
         self.x += step[0] * self.speed
         self.y += step[1] * self.speed
 
+if __name__ == "__main__":
+    print("open game.py to execute")
 
 
 
