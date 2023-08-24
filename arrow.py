@@ -12,7 +12,7 @@ class Arrow:
         self.image = pygame.transform.scale(self.image,self.scale)
         self.sprite = self.image
         self.offset = [16,20]
-        self.pivot = [30,0]
+        self.rect = self.image.get_rect(center=self.position)
     
     def follow(self,object)->None:
         self.x = object.x+self.offset[0]
@@ -26,8 +26,6 @@ class Arrow:
         angle = ((180 / math.pi) * -math.atan2(y_dis, x_dis)) - 90
         self.image = pygame.transform.rotate(self.sprite,int(angle))
         self.rect = self.image.get_rect(center=self.position)
-        offset_x = self.pivot[0] - self.rect.width / 2
-        offset_y = self.pivot[1] - self.rect.height / 2
 
     def draw(self,window):
         window.blit(self.image,self.rect.topleft)
