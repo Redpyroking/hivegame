@@ -15,7 +15,7 @@ WIDTH = 640
 HEIGHT = 320
 FPS = 60
 
-window = pygame.display.set_mode((WIDTH,HEIGHT))
+window = pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN)
 player = Player(320,160)
 arrow = Arrow(320,160)
 enemy_ship = Enemy(400,200)
@@ -33,16 +33,15 @@ def main(window):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                pygame.quit()
+                exit()
         process(window)
         clock.tick(FPS)
         pygame.display.update()
 
 def start(window):
-    for i in range(4):
-        #new_enemy_ship = Enemy(random.randrange(WIDTH+100,WIDTH+300),random.randrange(HEIGHT+100,HEIGHT+300))
-        new_enemy_ship = Enemy(random.randrange(100,300),random.randrange(100,300))
-        new_enemy_ship.speed = random.randrange(5,15)
-        new_ships.append(new_enemy_ship)
+    add_ship(14)
 
 def process(window):
     keys = pygame.key.get_pressed()
@@ -69,7 +68,6 @@ def process(window):
             global just_pressed
             if not just_pressed:#mouse[0] is left click and mouse is not just pressed
                 bullet = playerBullet(player.x,player.y)
-                bullet.followPos = pygame.mouse.get_pos()
                 bullets.append(bullet)
                 just_pressed = True
         else:
@@ -80,8 +78,14 @@ def process(window):
         arrow.rotate_around(player)
         arrow.draw(window)
     for i in new_ships:
+        if i.isDeleted:
+            new_ships.remove(i)
         i.move_toward(player)
         i.rotate_around(player)
+        for j in bullets:
+            if i.isColliding(j):
+                i.destroy()
+                j.isDeleted = True
         i.draw(window)
     for i in bullets:
         if i.isDeleted:
@@ -90,6 +94,12 @@ def process(window):
         i.draw(window)
         if i.is_outside_border(WIDTH,HEIGHT):
             i.isDeleted = True
+
+def add_ship(number):
+    for i in range(number):
+        new_enemy_ship = Enemy(random.randrange(-300,WIDTH+300),random.randrange(-300,HEIGHT+300))
+        new_enemy_ship.speed = random.randrange(5,15)
+        new_ships.append(new_enemy_ship)
 
 if __name__ == "__main__":
     main(window)

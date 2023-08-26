@@ -6,14 +6,15 @@ class playerBullet:
         self.x = x
         self.y = y
         self.position = (x,y)
-        self.speed = 2
+        self.speed = 7
         self.rotation = 0
         self.scale = (10,10)
         self.image = pygame.image.load('E:/github_projects/mazeGame/assest/player_bullet.png')
         self.image = pygame.transform.scale(self.image,self.scale)
         self.sprite = self.image
         self.isDeleted = False
-        self.followPos = None
+        self.followPos = pygame.mouse.get_pos()
+        self.rect = self.image.get_rect(center=self.position)
 
     def draw(self,window):
         window.blit(self.image,(self.x,self.y))
@@ -30,16 +31,21 @@ class playerBullet:
             y_dif /= dis
         self.x += x_dif*self.speed
         self.y += y_dif*self.speed
+        
     
+    def set_normal_pos(self):
+        pass
+
     def move_toward_pos(self):
-        x_dif = self.followPos[0] - self.x
-        y_dif = self.followPos[1] - self.y
+        x_dif = self.followPos[0] - self.position[0]
+        y_dif = self.followPos[1] - self.position[1]
         dis = math.sqrt(x_dif**2+y_dif**2)
         if dis>0:
             nor_x = x_dif / dis
             nor_y = y_dif / dis
-            self.x += nor_x*self.speed
-            self.y += nor_y*self.speed
+        self.x += nor_x*self.speed
+        self.y += nor_y*self.speed
+        self.rect = self.image.get_rect(center=(self.x,self.y))
     
     def is_outside_border(self,border_x,border_y):
         if self.x < 0 or self.y < 0:
@@ -48,6 +54,10 @@ class playerBullet:
             return True
         else:
             return False
+    
+    def isColliding(self,obj):
+        return self.rect.colliderect(obj.rect)
+
 
 if __name__ == "__main__":
     print("open game.py to execute")

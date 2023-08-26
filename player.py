@@ -13,6 +13,7 @@ class Player:
         self.sprite = self.image
         self.direction = "right"
         self.speed = 5
+        self.rect = self.image.get_rect(center=self.position)
 
     def flip(self,place,value)-> None:
         if place == "hor":
@@ -30,6 +31,7 @@ class Player:
     def move(self,step):
         self.x += step[0] * self.speed
         self.y += step[1] * self.speed
+        self.rect = self.image.get_rect(center=(self.x,self.y))
 
 if __name__ == "__main__":
     print("open game.py to execute")

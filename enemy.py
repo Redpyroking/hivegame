@@ -1,5 +1,6 @@
 import pygame
 import math
+from customTime import Timer
 
 class Enemy:
     def __init__(self,x,y) -> None:
@@ -15,6 +16,7 @@ class Enemy:
         self.speed = 5
         self.isDeleted = False
         self.rect = self.image.get_rect(center=self.position)
+        self.timer = Timer(70)
 
     def rotate(self,sprite,angle)->None:#Degree
         self.rotation = angle
@@ -29,6 +31,8 @@ class Enemy:
 
     def draw(self,window):
         window.blit(self.image,(self.x,self.y))
+        if self.timer.timeout():
+            self.delete()
     
     def delete(self):
         self.isDeleted = True
@@ -42,6 +46,18 @@ class Enemy:
             y_dif /= dis
         self.x += x_dif*self.speed*0.1
         self.y += y_dif*self.speed*0.1
+        self.rect = self.image.get_rect(center=(self.x,self.y))
+
+    def isColliding(self,obj):
+        return self.rect.colliderect(obj.rect)
+
+    def destroy(self):
+        self.timer.start()
+        self.speed = 0
+        self.image = pygame.image.load('E:/github_projects/mazeGame/assest/explosion.png')
+        self.image = pygame.transform.scale(self.image,self.scale)
+        self.sprite = self.image
+        
 
 if __name__ == "__main__":
     print("open game.py to execute")
